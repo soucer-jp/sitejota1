@@ -92,14 +92,13 @@
     animation: expandLine 1.5s ease 0.8s forwards;
   }
   .loader-subtitle {
-    font-family: 'Jost', sans-serif;
-    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
-    color: var(--gold-light);
+    font-size: 0.8rem;
     font-weight: 300;
-    letter-spacing: 0.38em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
+    color: var(--gold);
     opacity: 0;
-    animation: fadeInUp 1s ease 1.6s forwards;
+    animation: fadeInUp 1s ease 1.2s forwards;
   }
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -109,39 +108,11 @@
     to { width: 200px; }
   }
 
-  /* BUTTERFLIES */
-  .butterfly-container {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 50;
-    overflow: hidden;
-  }
-  .butterfly {
-    position: absolute;
-    opacity: 0;
-    animation: butterflyFloat linear infinite;
-    will-change: transform;
-  }
-  .butterfly svg {
-    animation: butterflyWing ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 6px rgba(196,169,106,0.4));
-  }
-  @keyframes butterflyFloat {
-    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-    5%   { opacity: 1; }
-    25%  { transform: translate(var(--dx1), var(--dy1)) rotate(var(--r1)); }
-    50%  { transform: translate(var(--dx2), var(--dy2)) rotate(var(--r2)); }
-    75%  { transform: translate(var(--dx3), var(--dy3)) rotate(var(--r3)); }
-    95% { opacity: 0.6; }
-    100% { transform: translate(var(--dx4), var(--dy4)) rotate(var(--r4)); opacity: 0; }
-  }
+  /* LOADER BUTTERFLIES */
   @keyframes butterflyWing {
     0%   { transform: scaleX(1); }
     100% { transform: scaleX(0.25); }
   }
-
-  /* LOADER BUTTERFLIES */
   .loader-butterfly {
     position: absolute;
     opacity: 0;
@@ -1049,7 +1020,6 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-name">Dra. Ana Beatriz</div>
   <div class="loader-line"></div>
@@ -1057,10 +1027,6 @@
   <div id="loaderButterflies" style="position:absolute;inset:0;pointer-events:none;"></div>
 </div>
 
-<!-- BUTTERFLIES LAYER -->
-<div class="butterfly-container" id="butterflyContainer"></div>
-
-<!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">Ana <span>Beatriz</span> Fontes</a>
   <ul class="nav-links">
@@ -1072,7 +1038,6 @@
   <a href="#contato" class="nav-cta">Agendar Consulta</a>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-left">
     <div class="hero-tag">Psicóloga Clínica · CRP 06/000000</div>
@@ -1121,7 +1086,6 @@
   </div>
 </section>
 
-<!-- SOBRE -->
 <section id="sobre">
   <div class="about-visual reveal">
     <div class="about-img-wrap">
@@ -1155,7 +1119,6 @@
   </div>
 </section>
 
-<!-- ESPECIALIDADES -->
 <section id="especialidades">
   <div class="esp-header reveal">
     <div class="esp-tag">Áreas de atuação</div>
@@ -1201,7 +1164,6 @@
   </div>
 </section>
 
-<!-- PROCESSO -->
 <section id="processo">
   <div class="processo-inner">
     <div class="reveal">
@@ -1248,7 +1210,6 @@
   </div>
 </section>
 
-<!-- DEPOIMENTOS -->
 <section id="depoimentos">
   <div class="dep-header reveal">
     <div class="dep-tag">Depoimentos</div>
@@ -1282,7 +1243,6 @@
   </div>
 </section>
 
-<!-- CONTATO -->
 <section id="contato">
   <div class="cta-text reveal">
     <div class="section-tag">Vamos conversar</div>
@@ -1315,7 +1275,7 @@
         </div>
         <div>
           <div class="info-label">E-mail</div>
-          <div class="info-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="492a26273d283d26092d3b282827282b2c283d3b2033672a2624672b3b">[email&#160;protected]</a></div>
+          <div class="info-text">contato@draanabeatriz.com.br</div>
         </div>
       </div>
       <div class="info-item">
@@ -1364,7 +1324,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">Ana <span>Beatriz</span> Fontes</div>
   <ul class="footer-links">
@@ -1375,42 +1334,30 @@
   <div class="footer-copy">© 2025 · CRP 06/000000 · Todos os direitos reservados</div>
 </footer>
 
-<!-- WHATSAPP FLOAT -->
 <a href="https://wa.me/5511999990000" class="whatsapp-float" target="_blank" rel="noopener">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
 </a>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   /* ── LOADER ── */
-  function hideLoader() {
+  window.addEventListener('load', () => {
     setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2600);
-  }
-  if (document.readyState === 'complete') {
-    hideLoader();
-  } else {
-    window.addEventListener('load', hideLoader);
-    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 4000);
-  }
+  });
 
   /* ── BUTTERFLY SVG PATH ── */
-  // Elegant minimal gold outline butterfly (two wing pairs)
   function makeButterflySVG(size, opacity, strokeW) {
     return `<svg width="${size}" height="${size*0.72}" viewBox="0 0 80 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- upper wings -->
       <path d="M40 29 C35 20, 18 8, 6 14 C-4 20, 4 36, 15 34 C24 32, 34 28, 40 29Z" 
             stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
       <path d="M40 29 C45 20, 62 8, 74 14 C84 20, 76 36, 65 34 C56 32, 46 28, 40 29Z" 
             stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
-      <!-- lower wings -->
       <path d="M40 29 C34 34, 20 38, 12 46 C6 52, 14 60, 22 56 C30 52, 37 38, 40 29Z" 
             stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
       <path d="M40 29 C46 34, 60 38, 68 46 C74 52, 66 60, 58 56 C50 52, 43 38, 40 29Z" 
             stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
-      <!-- body -->
       <path d="M40 18 Q41 29 40 42" stroke="#C4A96A" stroke-width="${strokeW*0.8}" stroke-linecap="round"/>
-      <!-- antennae -->
       <path d="M40 18 Q36 10 32 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
       <path d="M40 18 Q44 10 48 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
       <circle cx="32" cy="6" r="1.2" fill="#C4A96A" opacity="0.7"/>
@@ -1427,8 +1374,8 @@
         const el = document.createElement('div');
         el.className = 'loader-butterfly';
         const size = 30 + Math.random() * 30;
-        const startX = 20 + Math.random() * 60; // % from left
-        const startY = 30 + Math.random() * 40; // % from top
+        const startX = 20 + Math.random() * 60; 
+        const startY = 30 + Math.random() * 40; 
         const dx = (Math.random() - 0.5) * 300;
         const dy = -80 - Math.random() * 200;
         const dur = 2.2 + Math.random() * 1.2;
@@ -1441,77 +1388,6 @@
     }
   }
   spawnLoaderButterflies();
-
-  /* ── FLOATING BUTTERFLIES (site) ── */
-  const bContainer = document.getElementById('butterflyContainer');
-  const BFY_COUNT = 9;
-  const butterflies = [];
-
-  function rnd(min, max) { return min + Math.random() * (max - min); }
-  function rndSign() { return Math.random() > 0.5 ? 1 : -1; }
-
-  function createButterfly() {
-    const el = document.createElement('div');
-    el.className = 'butterfly';
-    const size = rnd(22, 52);
-    const opacity = rnd(0.18, 0.55);
-    const strokeW = size < 32 ? 1.2 : 1.6;
-    el.innerHTML = makeButterflySVG(size, opacity, strokeW);
-
-    // Random start position
-    const startX = rnd(0, window.innerWidth);
-    const startY = rnd(0, window.innerHeight);
-
-    // Random waypoints for organic flight path
-    const spread = rnd(120, 340);
-    const dx1 = rndSign() * rnd(40, spread);
-    const dy1 = rndSign() * rnd(30, spread * 0.7);
-    const dx2 = rndSign() * rnd(60, spread * 1.2);
-    const dy2 = rndSign() * rnd(40, spread);
-    const dx3 = rndSign() * rnd(30, spread);
-    const dy3 = rndSign() * rnd(50, spread * 0.8);
-    const dx4 = rndSign() * rnd(80, spread * 1.5);
-    const dy4 = rndSign() * rnd(60, spread);
-    const r1 = rndSign() * rnd(5, 25);
-    const r2 = rndSign() * rnd(8, 30);
-    const r3 = rndSign() * rnd(5, 20);
-    const r4 = rndSign() * rnd(10, 28);
-
-    const duration = rnd(14, 30);
-    const delay = rnd(0, 12);
-    const wingSpeed = rnd(0.28, 0.55);
-
-    el.style.cssText = `
-      left:${startX}px; top:${startY}px;
-      --dx1:${dx1}px; --dy1:${dy1}px;
-      --dx2:${dx2}px; --dy2:${dy2}px;
-      --dx3:${dx3}px; --dy3:${dy3}px;
-      --dx4:${dx4}px; --dy4:${dy4}px;
-      --r1:${r1}deg; --r2:${r2}deg; --r3:${r3}deg; --r4:${r4}deg;
-      animation-duration:${duration}s;
-      animation-delay:${delay}s;
-      opacity:0;
-    `;
-    el.querySelector('svg').style.animationDuration = wingSpeed + 's';
-    bContainer.appendChild(el);
-    butterflies.push({ el, duration, delay });
-
-    // Respawn after animation cycle
-    setTimeout(() => {
-      el.remove();
-      const idx = butterflies.findIndex(b => b.el === el);
-      if (idx > -1) butterflies.splice(idx, 1);
-      createButterfly();
-    }, (duration + delay) * 1000 + 500);
-  }
-
-  // Spawn with slight stagger — 1s após o loader sumir completamente
-  // loader some em ~2600ms + 800ms fade = 3400ms, +1000ms = 4400ms
-  setTimeout(() => {
-    for (let i = 0; i < BFY_COUNT; i++) {
-      setTimeout(createButterfly, i * 600);
-    }
-  }, 4400);
 
   /* ── CURSOR ── */
   const cursor = document.getElementById('cursor');
@@ -1547,4 +1423,13 @@
   reveals.forEach(el => observer.observe(el));
 
   /* ── SMOOTH SCROLL ── */
-  document.querySelectorAll('a[href^="#"]').
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
