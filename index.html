@@ -996,22 +996,202 @@
   .reveal-delay-4 { transition-delay: 0.4s; }
   .reveal-delay-5 { transition-delay: 0.5s; }
 
-  /* RESPONSIVE */
+  /* ═══════════════════════════════════════════
+     MOBILE — max-width: 900px
+     Hero: foto full em cima, texto embaixo
+  ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
-    nav { padding: 24px 28px; }
-    nav.scrolled { padding: 16px 28px; }
-    .nav-links, .nav-cta { display: none; }
-    #hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left { padding: 120px 28px 60px; }
-    .hero-right { height: 80vw; min-height: 360px; }
-    #sobre, #contato { grid-template-columns: 1fr; padding: 80px 28px; gap: 60px; }
-    #especialidades, #depoimentos { padding: 80px 28px; }
-    .esp-grid, .dep-grid { grid-template-columns: 1fr; }
-    #processo { padding: 80px 28px; }
-    .processo-inner { grid-template-columns: 1fr; }
-    footer { padding: 40px 28px; flex-direction: column; text-align: center; }
-    .hero-stats { gap: 28px; }
-    .about-badge { left: 10px; top: 10px; }
+
+    /* Cursor off em touch */
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+
+    /* ── NAV ── */
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-logo { font-size: 1.05rem; letter-spacing: 0.1em; }
+    .nav-cta {
+      font-size: 0.6rem;
+      padding: 10px 16px;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── HERO: foto topo, texto abaixo ── */
+    #hero {
+      display: flex;
+      flex-direction: column;
+      min-height: 100svh;
+    }
+
+    /* Foto: ~58% da viewport */
+    .hero-right {
+      order: 1;
+      position: relative;
+      width: 100%;
+      height: 58svh;
+      min-height: 280px;
+      overflow: hidden;
+      opacity: 1;
+      animation: heroReveal 1s ease 1.8s both;
+    }
+    .hero-photo-wrap {
+      position: absolute; inset: 0;
+    }
+    .hero-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+    }
+    /* gradiente transição cream na base */
+    .hero-photo-wrap::after {
+      height: 45%;
+      background: linear-gradient(transparent, var(--cream));
+    }
+    /* badge nome — fica integrado na base da foto */
+    .hero-photo-name {
+      bottom: 0; left: 0; right: 0;
+      padding: 14px 24px 18px;
+      border-left: none;
+      border-top: 2px solid var(--gold);
+      background: rgba(247,243,238,0.96);
+      backdrop-filter: blur(8px);
+    }
+    .photo-name-text { font-size: 1.1rem; }
+    .photo-crp { font-size: 0.6rem; letter-spacing: 0.16em; }
+    .hero-deco-circle { display: none; }
+
+    /* Texto abaixo da foto */
+    .hero-left {
+      order: 2;
+      padding: 28px 24px 68px;
+      opacity: 1;
+      animation: heroReveal 1s ease 2s both;
+    }
+    .hero-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 14px;
+    }
+    .hero-tag::before { width: 24px; }
+    .hero-h1 {
+      font-size: clamp(2.1rem, 8.5vw, 3rem);
+      margin-bottom: 18px;
+      line-height: 1.1;
+    }
+    .hero-desc {
+      font-size: 0.86rem;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      max-width: 100%;
+    }
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+    }
+    .btn-primary {
+      text-align: center;
+      padding: 16px 24px;
+      font-size: 0.66rem;
+    }
+    .btn-ghost {
+      font-size: 0.66rem;
+      justify-content: center;
+    }
+    .hero-stats {
+      margin-top: 36px;
+      padding-top: 28px;
+      gap: 0;
+      justify-content: space-between;
+    }
+    .hero-stats > div {
+      flex: 1;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .stat-num { font-size: 1.9rem; }
+    .stat-label { font-size: 0.55rem; letter-spacing: 0.06em; }
+
+    /* ── SOBRE ── */
+    #sobre {
+      grid-template-columns: 1fr;
+      padding: 68px 24px;
+      gap: 44px;
+    }
+    .about-visual {
+      max-width: 340px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .about-img-wrap { aspect-ratio: 4/5; }
+    .about-deco-rect { bottom: -14px; right: -14px; }
+    .about-badge {
+      left: -12px; top: 20px;
+      padding: 12px 16px;
+    }
+    .badge-num { font-size: 1.7rem; }
+    .badge-text { font-size: 0.55rem; }
+    .about-quals { grid-template-columns: 1fr; gap: 10px; }
+
+    /* ── ESPECIALIDADES ── */
+    #especialidades { padding: 68px 24px; }
+    .esp-header { margin-bottom: 44px; }
+    .esp-grid { grid-template-columns: 1fr; gap: 2px; }
+    .esp-card { padding: 32px 24px; cursor: auto; }
+    .esp-icon { width: 34px; height: 34px; margin-bottom: 18px; }
+    .esp-title { font-size: 1.35rem; }
+    .esp-num { font-size: 3rem; top: 14px; right: 18px; }
+
+    /* ── PROCESSO ── */
+    #processo { padding: 68px 24px; }
+    .processo-inner { grid-template-columns: 1fr; gap: 44px; }
+    .step { padding: 26px 0; gap: 18px; cursor: auto; }
+    .step-title { font-size: 1.15rem; }
+    .processo-quote { padding: 36px 24px; }
+    .processo-quote::before { font-size: 7rem; top: -8px; left: 8px; }
+    .quote-text { font-size: 1.15rem; }
+
+    /* ── DEPOIMENTOS ── */
+    #depoimentos { padding: 68px 24px; }
+    .dep-header { margin-bottom: 44px; }
+    .dep-grid { grid-template-columns: 1fr; gap: 14px; }
+    .dep-card { padding: 28px 22px; }
+
+    /* ── CONTATO ── */
+    #contato {
+      grid-template-columns: 1fr;
+      padding: 68px 24px;
+      gap: 48px;
+    }
+    .cta-desc { margin-bottom: 28px; }
+    .cta-form { padding: 32px 22px; }
+    .form-input,
+    .form-select { cursor: auto; font-size: 1rem; }
+    .form-btn { cursor: auto; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 36px 24px;
+      flex-direction: column;
+      text-align: center;
+      gap: 18px;
+    }
+    .footer-links { justify-content: center; gap: 20px; }
+
+    /* ── WHATSAPP ── */
+    .whatsapp-float {
+      bottom: 20px; right: 16px;
+      width: 50px; height: 50px;
+    }
+    .whatsapp-float svg { width: 22px; height: 22px; }
+  }
+
+  /* Telas muito pequenas */
+  @media (max-width: 380px) {
+    .hero-h1 { font-size: 1.95rem; }
+    .hero-stats { flex-direction: column; gap: 14px; }
+    .hero-stats > div { text-align: left; }
   }
 </style>
 </head>
@@ -1346,17 +1526,13 @@
     setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2600);
   });
 
-  /* ── BUTTERFLY SVG PATH ── */
+  /* ── BUTTERFLY SVG ── */
   function makeButterflySVG(size, opacity, strokeW) {
     return `<svg width="${size}" height="${size*0.72}" viewBox="0 0 80 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M40 29 C35 20, 18 8, 6 14 C-4 20, 4 36, 15 34 C24 32, 34 28, 40 29Z" 
-            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
-      <path d="M40 29 C45 20, 62 8, 74 14 C84 20, 76 36, 65 34 C56 32, 46 28, 40 29Z" 
-            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
-      <path d="M40 29 C34 34, 20 38, 12 46 C6 52, 14 60, 22 56 C30 52, 37 38, 40 29Z" 
-            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
-      <path d="M40 29 C46 34, 60 38, 68 46 C74 52, 66 60, 58 56 C50 52, 43 38, 40 29Z" 
-            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
+      <path d="M40 29 C35 20, 18 8, 6 14 C-4 20, 4 36, 15 34 C24 32, 34 28, 40 29Z" stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
+      <path d="M40 29 C45 20, 62 8, 74 14 C84 20, 76 36, 65 34 C56 32, 46 28, 40 29Z" stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
+      <path d="M40 29 C34 34, 20 38, 12 46 C6 52, 14 60, 22 56 C30 52, 37 38, 40 29Z" stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
+      <path d="M40 29 C46 34, 60 38, 68 46 C74 52, 66 60, 58 56 C50 52, 43 38, 40 29Z" stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
       <path d="M40 18 Q41 29 40 42" stroke="#C4A96A" stroke-width="${strokeW*0.8}" stroke-linecap="round"/>
       <path d="M40 18 Q36 10 32 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
       <path d="M40 18 Q44 10 48 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
@@ -1368,19 +1544,17 @@
   /* ── LOADER BUTTERFLIES ── */
   function spawnLoaderButterflies() {
     const container = document.getElementById('loaderButterflies');
-    const count = 6;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < 6; i++) {
       setTimeout(() => {
         const el = document.createElement('div');
         el.className = 'loader-butterfly';
         const size = 30 + Math.random() * 30;
-        const startX = 20 + Math.random() * 60; 
-        const startY = 30 + Math.random() * 40; 
+        const startX = 20 + Math.random() * 60;
+        const startY = 30 + Math.random() * 40;
         const dx = (Math.random() - 0.5) * 300;
         const dy = -80 - Math.random() * 200;
         const dur = 2.2 + Math.random() * 1.2;
-        el.style.cssText = `left:${startX}%;top:${startY}%;--lx:${dx}px;--ly:${dy}px;
-          animation-duration:${dur}s;animation-delay:0s;`;
+        el.style.cssText = `left:${startX}%;top:${startY}%;--lx:${dx}px;--ly:${dy}px;animation-duration:${dur}s;animation-delay:0s;`;
         el.innerHTML = makeButterflySVG(size, 0.9, 1.4);
         container.appendChild(el);
         setTimeout(() => el.remove(), dur * 1000 + 100);
@@ -1389,27 +1563,30 @@
   }
   spawnLoaderButterflies();
 
-  /* ── CURSOR ── */
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    cursor.style.left = mouseX - 4 + 'px';
-    cursor.style.top = mouseY - 4 + 'px';
-  });
-  function animRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX - 16 + 'px';
-    ring.style.top = ringY - 16 + 'px';
-    requestAnimationFrame(animRing);
+  /* ── CURSOR (desktop only) ── */
+  const isTouch = () => window.matchMedia('(max-width: 900px)').matches || ('ontouchstart' in window);
+  if (!isTouch()) {
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX - 4 + 'px';
+      cursor.style.top = mouseY - 4 + 'px';
+    });
+    function animRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX - 16 + 'px';
+      ring.style.top = ringY - 16 + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a, button, input, select').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
+    });
   }
-  animRing();
-  document.querySelectorAll('a, button, input, select').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; });
-    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
-  });
 
   /* ── NAV SCROLL ── */
   const nav = document.getElementById('nav');
@@ -1419,7 +1596,7 @@
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
 
   /* ── SMOOTH SCROLL ── */
