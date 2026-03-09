@@ -91,6 +91,16 @@
     background: var(--gold);
     animation: expandLine 1.5s ease 0.8s forwards;
   }
+  .loader-subtitle {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+    color: var(--gold-light);
+    font-weight: 300;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeInUp 1s ease 1.6s forwards;
+  }
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1043,6 +1053,7 @@
 <div id="loader">
   <div class="loader-name">Dra. Ana Beatriz</div>
   <div class="loader-line"></div>
+  <div class="loader-subtitle">Psicóloga Clínica</div>
   <div id="loaderButterflies" style="position:absolute;inset:0;pointer-events:none;"></div>
 </div>
 
@@ -1304,7 +1315,7 @@
         </div>
         <div>
           <div class="info-label">E-mail</div>
-          <div class="info-text">contato@draanabeatriz.com.br</div>
+          <div class="info-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="492a26273d283d26092d3b282827282b2c283d3b2033672a2624672b3b">[email&#160;protected]</a></div>
         </div>
       </div>
       <div class="info-item">
@@ -1371,11 +1382,17 @@
   </svg>
 </a>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   /* ── LOADER ── */
-  window.addEventListener('load', () => {
+  function hideLoader() {
     setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2600);
-  });
+  }
+  if (document.readyState === 'complete') {
+    hideLoader();
+  } else {
+    window.addEventListener('load', hideLoader);
+    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 4000);
+  }
 
   /* ── BUTTERFLY SVG PATH ── */
   // Elegant minimal gold outline butterfly (two wing pairs)
@@ -1488,10 +1505,13 @@
     }, (duration + delay) * 1000 + 500);
   }
 
-  // Spawn with slight stagger
-  for (let i = 0; i < BFY_COUNT; i++) {
-    setTimeout(createButterfly, i * 600);
-  }
+  // Spawn with slight stagger — 1s após o loader sumir completamente
+  // loader some em ~2600ms + 800ms fade = 3400ms, +1000ms = 4400ms
+  setTimeout(() => {
+    for (let i = 0; i < BFY_COUNT; i++) {
+      setTimeout(createButterfly, i * 600);
+    }
+  }, 4400);
 
   /* ── CURSOR ── */
   const cursor = document.getElementById('cursor');
@@ -1527,13 +1547,4 @@
   reveals.forEach(el => observer.observe(el));
 
   /* ── SMOOTH SCROLL ── */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) t.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
-</script>
-</body>
-</html>
+  document.querySelectorAll('a[href^="#"]').
