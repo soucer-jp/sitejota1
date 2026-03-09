@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dra. Ana Beatriz Fontes — Psicóloga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F7F3EE;
+    --warm: #EDE5D8;
+    --sage: #8A9E8C;
+    --sage-light: #B5C9B7;
+    --brown: #6B4E37;
+    --brown-light: #9C7A5E;
+    --charcoal: #2C2825;
+    --gold: #C4A96A;
+    --gold-light: #E8D5A3;
+    --text: #3A3330;
+    --text-light: #7A6E68;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* LOADER */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--charcoal);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--cream);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.3s forwards;
+  }
+  .loader-line {
+    width: 0; height: 1px;
+    background: var(--gold);
+    animation: expandLine 1.5s ease 0.8s forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes expandLine {
+    to { width: 200px; }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(247, 243, 238, 0.92);
+    backdrop-filter: blur(12px);
+    padding: 18px 60px;
+    border-bottom: 1px solid rgba(196, 169, 106, 0.2);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--charcoal);
+    padding: 12px 28px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--charcoal); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 80px 80px 80px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: heroReveal 1.2s ease 1.8s forwards;
+  }
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--charcoal);
+    margin-bottom: 32px;
+  }
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--brown-light);
+  }
+  .hero-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text-light);
+    max-width: 400px;
+    margin-bottom: 52px;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--charcoal);
+    padding: 18px 40px;
+    text-decoration: none;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .btn-primary:hover { color: var(--charcoal); }
+  .btn-primary:hover::after { transform: scaleX(1); }
+  .btn-ghost {
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+  }
+  .btn-ghost svg { transition: transform 0.3s; }
+  .btn-ghost:hover { color: var(--charcoal); }
+  .btn-ghost:hover svg { transform: translateX(5px); }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(196, 169, 106, 0.25);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--charcoal);
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* HERO RIGHT — real photo */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: heroReveal 1.2s ease 2s forwards;
+  }
+  .hero-photo-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  /* soft vignette at bottom */
+  .hero-photo-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(transparent, rgba(44,40,37,0.35));
+  }
+  .hero-photo-name {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    right: 40px;
+    background: rgba(247, 243, 238, 0.92);
+    backdrop-filter: blur(10px);
+    padding: 24px 28px;
+    border-left: 3px solid var(--gold);
+    z-index: 3;
+  }
+  .photo-name-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--charcoal);
+  }
+  .photo-crp {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .hero-deco-circle {
+    position: absolute;
+    top: 10%; right: -60px;
+    width: 200px; height: 200px;
+    border: 1px solid rgba(196,169,106,0.3);
+    border-radius: 50%;
+    animation: rotate 20s linear infinite;
+    z-index: 2;
+  }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+
+  /* ABOUT */
+  #sobre {
+    padding: 140px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 100px;
+    align-items: center;
+    position: relative;
+  }
+  #sobre::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-wrap {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+  }
+  .about-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .about-img-wrap:hover img { transform: scale(1.03); }
+  .about-img-wrap::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(44,40,37,0.2) 100%);
+    z-index: 1;
+  }
+  .about-deco-rect {
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 70%; height: 70%;
+    border: 1px solid var(--gold);
+    z-index: -1;
+  }
+  .about-badge {
+    position: absolute;
+    top: 30px; left: -30px;
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 20px 24px;
+    text-align: center;
+    z-index: 2;
+  }
+  .badge-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .badge-text {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 6px;
+  }
+  .about-content { position: relative; }
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+  .section-h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 28px;
+  }
+  .section-h2 em { font-style: italic; color: var(--brown-light); }
+  .about-text {
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 2;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+  .about-quals {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .qual-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .qual-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .qual-text {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ESPECIALIDADES */
+  #especialidades {
+    padding: 120px 80px;
+    background: var(--charcoal);
+    position: relative;
+    overflow: hidden;
+  }
+  #especialidades::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border: 1px solid rgba(196,169,106,0.1);
+    border-radius: 50%;
+  }
+  #especialidades::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -150px;
+    width: 400px; height: 400px;
+    border: 1px solid rgba(196,169,106,0.08);
+    border-radius: 50%;
+  }
+  .esp-header {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .esp-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .esp-h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .esp-h2 em { font-style: italic; color: var(--gold-light); }
+  .esp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    position: relative;
+    z-index: 2;
+  }
+  .esp-card {
+    background: rgba(247,243,238,0.04);
+    padding: 52px 40px;
+    border: 1px solid rgba(196,169,106,0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .esp-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .esp-card:hover {
+    background: rgba(196,169,106,0.08);
+    transform: translateY(-4px);
+  }
+  .esp-card:hover::before { transform: scaleX(1); }
+  .esp-icon {
+    width: 48px; height: 48px;
+    margin-bottom: 28px;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+  .esp-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: rgba(196,169,106,0.15);
+    position: absolute;
+    top: 20px; right: 30px;
+    line-height: 1;
+  }
+  .esp-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .esp-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(247,243,238,0.5);
+  }
+
+  /* PROCESSO */
+  #processo {
+    padding: 140px 80px;
+    position: relative;
+  }
+  .processo-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .processo-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    display: flex;
+    gap: 28px;
+    padding: 36px 0;
+    border-bottom: 1px solid rgba(196,169,106,0.2);
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .step:first-child { border-top: 1px solid rgba(196,169,106,0.2); }
+  .step:hover .step-num { color: var(--gold); opacity: 1; }
+  .step:hover { padding-left: 12px; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.4;
+    line-height: 1;
+    padding-top: 4px;
+    transition: all 0.3s;
+    min-width: 30px;
+  }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+  .step-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-light);
+  }
+  .processo-quote {
+    position: relative;
+    padding: 60px;
+    background: var(--warm);
+  }
+  .processo-quote::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12rem;
+    color: var(--gold);
+    opacity: 0.2;
+    position: absolute;
+    top: -20px; left: 20px;
+    line-height: 1;
+  }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--charcoal);
+    line-height: 1.6;
+    position: relative;
+    z-index: 2;
+  }
+  .quote-author {
+    margin-top: 28px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    position: relative;
+    z-index: 2;
+  }
+  .quote-deco {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 120px; height: 120px;
+    background: var(--sage-light);
+    opacity: 0.3;
+  }
+
+  /* DEPOIMENTOS */
+  #depoimentos {
+    padding: 120px 80px;
+    background: linear-gradient(160deg, var(--charcoal) 0%, #3A2E28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .dep-header { text-align: center; margin-bottom: 80px; }
+  .dep-h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+  .dep-h2 em { font-style: italic; color: var(--gold-light); }
+  .dep-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .dep-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .dep-card {
+    background: rgba(247,243,238,0.05);
+    border: 1px solid rgba(196,169,106,0.15);
+    padding: 44px 36px;
+    transition: all 0.4s;
+  }
+  .dep-card:hover {
+    background: rgba(247,243,238,0.08);
+    transform: translateY(-6px);
+  }
+  .dep-stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+  }
+  .dep-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(247,243,238,0.8);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .dep-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dep-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brown-light), var(--brown));
+  }
+  .dep-name {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.08em;
+  }
+  .dep-role {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: rgba(247,243,238,0.4);
+    margin-top: 2px;
+  }
+
+  /* CTA SECTION */
+  #contato {
+    padding: 160px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    position: relative;
+  }
+  #contato::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .cta-desc {
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 2;
+    color: var(--text-light);
+    margin-bottom: 48px;
+  }
+  .cta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .info-icon {
+    width: 40px; height: 40px;
+    background: var(--warm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+  .info-text {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+  .info-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+  .cta-form {
+    background: var(--warm);
+    padding: 56px 48px;
+    position: relative;
+  }
+  .cta-form::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+  }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+  .form-sub {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--text-light);
+    margin-bottom: 36px;
+  }
+  .form-group { margin-bottom: 22px; }
+  .form-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(107,78,55,0.3);
+    padding: 10px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: none;
+  }
+  .form-input:focus { border-bottom-color: var(--gold); }
+  .form-input::placeholder { color: rgba(107,78,55,0.4); }
+  .form-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(107,78,55,0.3);
+    padding: 10px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: none;
+    appearance: none;
+  }
+  .form-select:focus { border-bottom-color: var(--gold); }
+  .form-btn {
+    width: 100%;
+    background: var(--charcoal);
+    color: var(--cream);
+    border: none;
+    padding: 18px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.4s;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .form-btn:hover { color: var(--charcoal); }
+  .form-btn:hover::after { transform: scaleX(1); }
+  .form-btn span { position: relative; z-index: 1; }
+  .form-privacy {
+    font-size: 0.68rem;
+    font-weight: 300;
+    color: var(--text-light);
+    text-align: center;
+    margin-top: 16px;
+    opacity: 0.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    padding: 60px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.1em;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: rgba(247,243,238,0.3);
+    letter-spacing: 0.1em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(247,243,238,0.4);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* FLOATING WHATSAPP */
+  .whatsapp-float {
+    position: fixed;
+    bottom: 40px; right: 40px;
+    width: 58px; height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(37, 211, 102, 0.5);
+  }
+  .whatsapp-float svg { width: 28px; height: 28px; fill: white; }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 24px 28px; }
+    nav.scrolled { padding: 16px 28px; }
+    .nav-links, .nav-cta { display: none; }
+    #hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 120px 28px 60px; }
+    .hero-right { height: 80vw; min-height: 360px; }
+    #sobre, #contato { grid-template-columns: 1fr; padding: 80px 28px; gap: 60px; }
+    #especialidades, #depoimentos { padding: 80px 28px; }
+    .esp-grid, .dep-grid { grid-template-columns: 1fr; }
+    #processo { padding: 80px 28px; }
+    .processo-inner { grid-template-columns: 1fr; }
+    footer { padding: 40px 28px; flex-direction: column; text-align: center; }
+    .hero-stats { gap: 28px; }
+    .about-badge { left: 10px; top: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name">Dra. Ana Beatriz</div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Ana <span>Beatriz</span> Fontes</a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#especialidades">Especialidades</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Agendar Consulta</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Psicóloga Clínica · CRP 06/000000</div>
+    <h1 class="hero-h1">
+      Cuidar da sua<br>
+      mente é o maior<br>
+      <em>ato de amor</em><br>
+      por si mesmo.
+    </h1>
+    <p class="hero-desc">
+      Acompanhamento psicológico individual com abordagem humanizada, integrando técnicas de ponta para que você alcance equilíbrio emocional e qualidade de vida.
+    </p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn-primary">Agendar Primeira Consulta</a>
+      <a href="#sobre" class="btn-ghost">
+        Conhecer mais
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Anos de experiência</div>
+      </div>
+      <div>
+        <div class="stat-num">800+</div>
+        <div class="stat-label">Pacientes atendidos</div>
+      </div>
+      <div>
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Índice de satisfação</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      <img src="perfil1.webp" alt="Dra. Ana Beatriz Fontes — Psicóloga">
+    </div>
+    <div class="hero-photo-name">
+      <div class="photo-name-text">Dra. Ana Beatriz Fontes</div>
+      <div class="photo-crp">Psicóloga Clínica · CRP 06/000000</div>
+    </div>
+    <div class="hero-deco-circle"></div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="about-visual reveal">
+    <div class="about-img-wrap">
+      <img src="perfil2.webp" alt="Dra. Ana Beatriz Fontes">
+    </div>
+    <div class="about-deco-rect"></div>
+    <div class="about-badge">
+      <div class="badge-num">12</div>
+      <div class="badge-text">Anos de<br>prática clínica</div>
+    </div>
+  </div>
+  <div class="about-content reveal reveal-delay-2">
+    <div class="section-tag">Quem sou eu</div>
+    <h2 class="section-h2">
+      Psicologia que <em>transforma</em><br>através do autoconhecimento
+    </h2>
+    <p class="about-text">
+      Sou psicóloga formada pela USP, com especialização em Terapia Cognitivo-Comportamental e pós-graduação em Neuropsicologia. Acredito que cada pessoa carrega em si mesma a capacidade de se curar e se reinventar.
+    </p>
+    <p class="about-text">
+      Meu trabalho é criar um espaço seguro, acolhedor e sem julgamentos onde você possa explorar seus pensamentos, emoções e padrões de comportamento com liberdade e confiança.
+    </p>
+    <div class="about-quals">
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Graduação em Psicologia — USP</div></div>
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Especialização em TCC</div></div>
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Pós em Neuropsicologia</div></div>
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Atendimento presencial e online</div></div>
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Membro do CFP</div></div>
+      <div class="qual-item"><div class="qual-dot"></div><div class="qual-text">Formação em Mindfulness</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALIDADES -->
+<section id="especialidades">
+  <div class="esp-header reveal">
+    <div class="esp-tag">Áreas de atuação</div>
+    <h2 class="esp-h2">Cada desafio merece uma<br><em>abordagem singular</em></h2>
+  </div>
+  <div class="esp-grid">
+    <div class="esp-card reveal reveal-delay-1">
+      <div class="esp-num">01</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="24" cy="20" r="12"/><path d="M8 40c0-8.84 7.16-16 16-16s16 7.16 16 16"/></svg>
+      <h3 class="esp-title">Ansiedade & Estresse</h3>
+      <p class="esp-desc">Ferramentas práticas para gerenciar pensamentos ansiosos, regular emoções e recuperar a leveza no dia a dia.</p>
+    </div>
+    <div class="esp-card reveal reveal-delay-2">
+      <div class="esp-num">02</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4z"/><path d="M24 16v8l6 4"/></svg>
+      <h3 class="esp-title">Depressão</h3>
+      <p class="esp-desc">Acolhimento especializado para atravessar períodos difíceis, reconstruir a autoestima e encontrar significado e motivação.</p>
+    </div>
+    <div class="esp-card reveal reveal-delay-3">
+      <div class="esp-num">03</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M24 4l5.09 10.26L40 15.27l-8 7.79 1.89 11L24 28.77l-9.89 5.29L16 23.06l-8-7.79 10.91-1.01z"/></svg>
+      <h3 class="esp-title">Autoconhecimento</h3>
+      <p class="esp-desc">Um processo de descoberta profunda dos seus valores, crenças e potencial para viver de forma mais autêntica e plena.</p>
+    </div>
+    <div class="esp-card reveal reveal-delay-1">
+      <div class="esp-num">04</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M32 20c0-4.4-3.6-8-8-8s-8 3.6-8 8c0 3.2 1.9 6 4.7 7.4l-2.7 12.6h12l-2.7-12.6c2.8-1.4 4.7-4.2 4.7-7.4z"/></svg>
+      <h3 class="esp-title">Relacionamentos</h3>
+      <p class="esp-desc">Trabalho terapêutico para padrões afetivos, comunicação, vínculos saudáveis e relações mais equilibradas.</p>
+    </div>
+    <div class="esp-card reveal reveal-delay-2">
+      <div class="esp-num">05</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="8" y="8" width="32" height="32" rx="4"/><path d="M16 24h16M24 16v16"/></svg>
+      <h3 class="esp-title">Luto & Perdas</h3>
+      <p class="esp-desc">Suporte humanizado nos processos de perda, facilitando a elaboração e a reconexão com a vida e seus prazeres.</p>
+    </div>
+    <div class="esp-card reveal reveal-delay-3">
+      <div class="esp-num">06</div>
+      <svg class="esp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 36l8-8 8 8 8-8"/><path d="M4 24C4 13 13 4 24 4s20 9 20 20-9 20-20 20S4 35 4 24z"/></svg>
+      <h3 class="esp-title">Desenvolvimento Pessoal</h3>
+      <p class="esp-desc">Potencializar habilidades, superar bloqueios e construir a versão mais realizada e consciente de você mesmo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section id="processo">
+  <div class="processo-inner">
+    <div class="reveal">
+      <div class="section-tag">Como funciona</div>
+      <h2 class="section-h2">Uma jornada<br>pensada <em>para você</em></h2>
+      <div class="processo-steps" style="margin-top:44px;">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <div class="step-title">Consulta de Acolhimento</div>
+            <p class="step-desc">Primeiro encontro para nos conhecermos, entender suas demandas e definir juntos os objetivos do trabalho.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <div class="step-title">Plano Personalizado</div>
+            <p class="step-desc">Elaboro uma proposta terapêutica sob medida para o seu momento de vida e suas necessidades específicas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <div class="step-title">Acompanhamento Contínuo</div>
+            <p class="step-desc">Sessões regulares com evolução acompanhada, ajustando abordagens conforme você avança em sua jornada.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div>
+            <div class="step-title">Conquista & Consolidação</div>
+            <p class="step-desc">Preparação para encerrar o ciclo com autonomia emocional, ferramentas internalizadas e bem-estar sustentável.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="processo-quote reveal reveal-delay-2">
+      <blockquote class="quote-text">
+        "A terapia não é sobre consertar o que está quebrado. É sobre descobrir o que sempre esteve inteiro dentro de você."
+      </blockquote>
+      <div class="quote-author">— Dra. Ana Beatriz Fontes</div>
+      <div class="quote-deco"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section id="depoimentos">
+  <div class="dep-header reveal">
+    <div class="dep-tag">Depoimentos</div>
+    <h2 class="dep-h2">Histórias que <em>inspiram</em></h2>
+  </div>
+  <div class="dep-grid">
+    <div class="dep-card reveal reveal-delay-1">
+      <div class="dep-stars">★★★★★</div>
+      <p class="dep-text">"Depois de anos carregando um peso enorme sozinha, encontrar a Ana Beatriz foi um divisor de águas. Hoje me sinto leve e capaz de enfrentar qualquer desafio."</p>
+      <div class="dep-author">
+        <div class="dep-avatar"></div>
+        <div><div class="dep-name">Mariana S.</div><div class="dep-role">Executiva · 2 anos de acompanhamento</div></div>
+      </div>
+    </div>
+    <div class="dep-card reveal reveal-delay-2">
+      <div class="dep-stars">★★★★★</div>
+      <p class="dep-text">"A abordagem da doutora é completamente diferente. Ela não só escuta — ela entende, e isso faz toda a diferença no processo. Me transformei completamente."</p>
+      <div class="dep-author">
+        <div class="dep-avatar"></div>
+        <div><div class="dep-name">Roberto L.</div><div class="dep-role">Empresário · 18 meses de acompanhamento</div></div>
+      </div>
+    </div>
+    <div class="dep-card reveal reveal-delay-3">
+      <div class="dep-stars">★★★★★</div>
+      <p class="dep-text">"Cheguei em crise de ansiedade, sem conseguir dormir ou trabalhar. Hoje tenho ferramentas reais para lidar com tudo e uma qualidade de vida que nunca imaginei ter."</p>
+      <div class="dep-author">
+        <div class="dep-avatar"></div>
+        <div><div class="dep-name">Camila R.</div><div class="dep-role">Designer · 1 ano de acompanhamento</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="cta-text reveal">
+    <div class="section-tag">Vamos conversar</div>
+    <h2 class="section-h2">O primeiro passo é<br>o mais <em>corajoso</em></h2>
+    <p class="cta-desc">
+      Agende sua consulta de acolhimento e descubra como a psicoterapia pode transformar a sua vida. Atendo presencialmente em São Paulo e online para todo o Brasil.
+    </p>
+    <div class="cta-info">
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Endereço</div>
+          <div class="info-text">Rua dos Pinheiros, 850 — Conjunto 42<br>Pinheiros, São Paulo · SP</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+        </div>
+        <div>
+          <div class="info-label">WhatsApp</div>
+          <div class="info-text">(11) 99999-0000</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </div>
+        <div>
+          <div class="info-label">E-mail</div>
+          <div class="info-text">contato@draanabeatriz.com.br</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Horários</div>
+          <div class="info-text">Segunda a Sexta: 8h às 19h<br>Sábado: 8h às 13h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-form reveal reveal-delay-2">
+    <h3 class="form-title">Agendar Consulta</h3>
+    <p class="form-sub">Preencha e retornamos em até 2 horas</p>
+    <div class="form-group">
+      <label class="form-label">Nome completo</label>
+      <input type="text" class="form-input" placeholder="Seu nome">
+    </div>
+    <div class="form-group">
+      <label class="form-label">WhatsApp</label>
+      <input type="tel" class="form-input" placeholder="(11) 99999-9999">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Área de interesse</label>
+      <select class="form-select">
+        <option value="" disabled selected>Selecione...</option>
+        <option>Ansiedade & Estresse</option>
+        <option>Depressão</option>
+        <option>Relacionamentos</option>
+        <option>Autoconhecimento</option>
+        <option>Desenvolvimento Pessoal</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Modalidade</label>
+      <select class="form-select">
+        <option>Presencial — São Paulo</option>
+        <option>Online — Videochamada</option>
+      </select>
+    </div>
+    <button class="form-btn"><span>Solicitar Agendamento</span></button>
+    <p class="form-privacy">🔒 Suas informações são totalmente confidenciais</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ana <span>Beatriz</span> Fontes</div>
+  <ul class="footer-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#especialidades">Especialidades</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 · CRP 06/000000 · Todos os direitos reservados</div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5511999990000" class="whatsapp-float" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2200);
+  });
+
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX - 4 + 'px';
+    cursor.style.top = mouseY - 4 + 'px';
+  });
+  function animRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX - 16 + 'px';
+    ring.style.top = ringY - 16 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button, input, select').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
+  });
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
