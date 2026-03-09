@@ -99,6 +99,55 @@
     to { width: 200px; }
   }
 
+  /* BUTTERFLIES */
+  .butterfly-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+  }
+  .butterfly {
+    position: absolute;
+    opacity: 0;
+    animation: butterflyFloat linear infinite;
+    will-change: transform;
+  }
+  .butterfly svg {
+    animation: butterflyWing ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 6px rgba(196,169,106,0.4));
+  }
+  @keyframes butterflyFloat {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    5%   { opacity: 1; }
+    25%  { transform: translate(var(--dx1), var(--dy1)) rotate(var(--r1)); }
+    50%  { transform: translate(var(--dx2), var(--dy2)) rotate(var(--r2)); }
+    75%  { transform: translate(var(--dx3), var(--dy3)) rotate(var(--r3)); }
+    95% { opacity: 0.6; }
+    100% { transform: translate(var(--dx4), var(--dy4)) rotate(var(--r4)); opacity: 0; }
+  }
+  @keyframes butterflyWing {
+    0%   { transform: scaleX(1); }
+    100% { transform: scaleX(0.25); }
+  }
+
+  /* LOADER BUTTERFLIES */
+  .loader-butterfly {
+    position: absolute;
+    opacity: 0;
+    animation: loaderBfly ease-in-out forwards;
+    filter: drop-shadow(0 0 8px rgba(196,169,106,0.6));
+  }
+  .loader-butterfly svg {
+    animation: butterflyWing 0.35s ease-in-out infinite alternate;
+  }
+  @keyframes loaderBfly {
+    0%   { opacity: 0; transform: translate(0,30px) scale(0.5); }
+    30%  { opacity: 1; transform: translate(0,0) scale(1); }
+    70%  { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(var(--lx), var(--ly)) scale(0.6); }
+  }
+
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0;
@@ -994,7 +1043,11 @@
 <div id="loader">
   <div class="loader-name">Dra. Ana Beatriz</div>
   <div class="loader-line"></div>
+  <div id="loaderButterflies" style="position:absolute;inset:0;pointer-events:none;"></div>
 </div>
+
+<!-- BUTTERFLIES LAYER -->
+<div class="butterfly-container" id="butterflyContainer"></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -1319,10 +1372,128 @@
 </a>
 
 <script>
+  /* ── LOADER ── */
   window.addEventListener('load', () => {
-    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2200);
+    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2600);
   });
 
+  /* ── BUTTERFLY SVG PATH ── */
+  // Elegant minimal gold outline butterfly (two wing pairs)
+  function makeButterflySVG(size, opacity, strokeW) {
+    return `<svg width="${size}" height="${size*0.72}" viewBox="0 0 80 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- upper wings -->
+      <path d="M40 29 C35 20, 18 8, 6 14 C-4 20, 4 36, 15 34 C24 32, 34 28, 40 29Z" 
+            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
+      <path d="M40 29 C45 20, 62 8, 74 14 C84 20, 76 36, 65 34 C56 32, 46 28, 40 29Z" 
+            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round"/>
+      <!-- lower wings -->
+      <path d="M40 29 C34 34, 20 38, 12 46 C6 52, 14 60, 22 56 C30 52, 37 38, 40 29Z" 
+            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
+      <path d="M40 29 C46 34, 60 38, 68 46 C74 52, 66 60, 58 56 C50 52, 43 38, 40 29Z" 
+            stroke="#C4A96A" stroke-width="${strokeW}" fill="none" stroke-linejoin="round" opacity="0.8"/>
+      <!-- body -->
+      <path d="M40 18 Q41 29 40 42" stroke="#C4A96A" stroke-width="${strokeW*0.8}" stroke-linecap="round"/>
+      <!-- antennae -->
+      <path d="M40 18 Q36 10 32 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
+      <path d="M40 18 Q44 10 48 6" stroke="#C4A96A" stroke-width="${strokeW*0.6}" stroke-linecap="round" opacity="0.7"/>
+      <circle cx="32" cy="6" r="1.2" fill="#C4A96A" opacity="0.7"/>
+      <circle cx="48" cy="6" r="1.2" fill="#C4A96A" opacity="0.7"/>
+    </svg>`;
+  }
+
+  /* ── LOADER BUTTERFLIES ── */
+  function spawnLoaderButterflies() {
+    const container = document.getElementById('loaderButterflies');
+    const count = 6;
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'loader-butterfly';
+        const size = 30 + Math.random() * 30;
+        const startX = 20 + Math.random() * 60; // % from left
+        const startY = 30 + Math.random() * 40; // % from top
+        const dx = (Math.random() - 0.5) * 300;
+        const dy = -80 - Math.random() * 200;
+        const dur = 2.2 + Math.random() * 1.2;
+        el.style.cssText = `left:${startX}%;top:${startY}%;--lx:${dx}px;--ly:${dy}px;
+          animation-duration:${dur}s;animation-delay:0s;`;
+        el.innerHTML = makeButterflySVG(size, 0.9, 1.4);
+        container.appendChild(el);
+        setTimeout(() => el.remove(), dur * 1000 + 100);
+      }, i * 280 + 600);
+    }
+  }
+  spawnLoaderButterflies();
+
+  /* ── FLOATING BUTTERFLIES (site) ── */
+  const bContainer = document.getElementById('butterflyContainer');
+  const BFY_COUNT = 9;
+  const butterflies = [];
+
+  function rnd(min, max) { return min + Math.random() * (max - min); }
+  function rndSign() { return Math.random() > 0.5 ? 1 : -1; }
+
+  function createButterfly() {
+    const el = document.createElement('div');
+    el.className = 'butterfly';
+    const size = rnd(22, 52);
+    const opacity = rnd(0.18, 0.55);
+    const strokeW = size < 32 ? 1.2 : 1.6;
+    el.innerHTML = makeButterflySVG(size, opacity, strokeW);
+
+    // Random start position
+    const startX = rnd(0, window.innerWidth);
+    const startY = rnd(0, window.innerHeight);
+
+    // Random waypoints for organic flight path
+    const spread = rnd(120, 340);
+    const dx1 = rndSign() * rnd(40, spread);
+    const dy1 = rndSign() * rnd(30, spread * 0.7);
+    const dx2 = rndSign() * rnd(60, spread * 1.2);
+    const dy2 = rndSign() * rnd(40, spread);
+    const dx3 = rndSign() * rnd(30, spread);
+    const dy3 = rndSign() * rnd(50, spread * 0.8);
+    const dx4 = rndSign() * rnd(80, spread * 1.5);
+    const dy4 = rndSign() * rnd(60, spread);
+    const r1 = rndSign() * rnd(5, 25);
+    const r2 = rndSign() * rnd(8, 30);
+    const r3 = rndSign() * rnd(5, 20);
+    const r4 = rndSign() * rnd(10, 28);
+
+    const duration = rnd(14, 30);
+    const delay = rnd(0, 12);
+    const wingSpeed = rnd(0.28, 0.55);
+
+    el.style.cssText = `
+      left:${startX}px; top:${startY}px;
+      --dx1:${dx1}px; --dy1:${dy1}px;
+      --dx2:${dx2}px; --dy2:${dy2}px;
+      --dx3:${dx3}px; --dy3:${dy3}px;
+      --dx4:${dx4}px; --dy4:${dy4}px;
+      --r1:${r1}deg; --r2:${r2}deg; --r3:${r3}deg; --r4:${r4}deg;
+      animation-duration:${duration}s;
+      animation-delay:${delay}s;
+      opacity:0;
+    `;
+    el.querySelector('svg').style.animationDuration = wingSpeed + 's';
+    bContainer.appendChild(el);
+    butterflies.push({ el, duration, delay });
+
+    // Respawn after animation cycle
+    setTimeout(() => {
+      el.remove();
+      const idx = butterflies.findIndex(b => b.el === el);
+      if (idx > -1) butterflies.splice(idx, 1);
+      createButterfly();
+    }, (duration + delay) * 1000 + 500);
+  }
+
+  // Spawn with slight stagger
+  for (let i = 0; i < BFY_COUNT; i++) {
+    setTimeout(createButterfly, i * 600);
+  }
+
+  /* ── CURSOR ── */
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
@@ -1344,15 +1515,18 @@
     el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
   });
 
+  /* ── NAV SCROLL ── */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
+  /* ── REVEAL ── */
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
 
+  /* ── SMOOTH SCROLL ── */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
